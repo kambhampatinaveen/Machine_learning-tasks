@@ -1,0 +1,692 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Car Price Prediction</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
+
+</head>
+
+
+<body>
+
+
+<!-- ============================= -->
+<!-- Navigation Bar -->
+<!-- ============================= -->
+
+<nav class="navbar">
+
+    <div class="logo">
+        🚗 CarPrice AI
+    </div>
+
+    <div class="nav-links">
+        <a href="#home">Home</a>
+        <a href="#predict">Predict</a>
+        <a href="#about">About</a>
+    </div>
+
+</nav>
+
+
+<!-- ============================= -->
+<!-- Hero Section -->
+<!-- ============================= -->
+
+<section class="hero" id="home">
+
+    <div class="hero-content">
+
+        <p class="small-title">
+            MACHINE LEARNING PROJECT
+        </p>
+
+        <h1>
+            Car Price
+            <span>Prediction</span>
+        </h1>
+
+        <p>
+            Predict the estimated selling price of a used car
+            using Multiple Linear Regression.
+        </p>
+
+        <a href="#predict" class="hero-button">
+            Predict Price
+        </a>
+
+    </div>
+
+</section>
+
+
+<!-- ============================= -->
+<!-- Prediction Section -->
+<!-- ============================= -->
+
+<section class="prediction-section" id="predict">
+
+    <div class="prediction-card">
+
+        <div class="section-title">
+
+            <p>AI CAR PRICE PREDICTOR</p>
+
+            <h2>
+                Enter Car Details
+            </h2>
+
+            <span>
+                Fill in the details below to estimate the
+                selling price.
+            </span>
+
+        </div>
+
+
+        <!-- ============================= -->
+        <!-- Prediction Form -->
+        <!-- ============================= -->
+
+        <form id="predictionForm">
+
+
+            <!-- Brand -->
+
+            <div class="form-group">
+
+                <label for="brand">
+                    Car Brand
+                </label>
+
+                <select id="brand" required>
+
+                    <option value="">
+                        Select Brand
+                    </option>
+
+                    {% for brand in brands %}
+
+                    <option value="{{ brand }}">
+                        {{ brand }}
+                    </option>
+
+                    {% endfor %}
+
+                </select>
+
+            </div>
+
+
+            <!-- Model -->
+
+            <div class="form-group">
+
+                <label for="model">
+                    Car Model
+                </label>
+
+                <select id="model" required>
+
+                    <option value="">
+                        Select Model
+                    </option>
+
+                    {% for model in models %}
+
+                    <option value="{{ model }}">
+                        {{ model }}
+                    </option>
+
+                    {% endfor %}
+
+                </select>
+
+            </div>
+
+
+            <!-- Year -->
+
+            <div class="form-group">
+
+                <label for="year">
+                    Manufacturing Year
+                </label>
+
+                <input
+                    type="number"
+                    id="year"
+                    min="1990"
+                    max="2026"
+                    placeholder="Example: 2022"
+                    required
+                >
+
+            </div>
+
+
+            <!-- Kilometers -->
+
+            <div class="form-group">
+
+                <label for="kilometers">
+                    Kilometers Driven
+                </label>
+
+                <input
+                    type="number"
+                    id="kilometers"
+                    min="0"
+                    placeholder="Example: 30000"
+                    required
+                >
+
+            </div>
+
+
+            <!-- Fuel Type -->
+
+            <div class="form-group">
+
+                <label for="fuel">
+                    Fuel Type
+                </label>
+
+                <select id="fuel" required>
+
+                    <option value="">
+                        Select Fuel Type
+                    </option>
+
+                    {% for fuel in fuel_types %}
+
+                    <option value="{{ fuel }}">
+                        {{ fuel }}
+                    </option>
+
+                    {% endfor %}
+
+                </select>
+
+            </div>
+
+
+            <!-- Transmission -->
+
+            <div class="form-group">
+
+                <label for="transmission">
+                    Transmission
+                </label>
+
+                <select id="transmission" required>
+
+                    <option value="">
+                        Select Transmission
+                    </option>
+
+                    {% for transmission in transmissions %}
+
+                    <option value="{{ transmission }}">
+                        {{ transmission }}
+                    </option>
+
+                    {% endfor %}
+
+                </select>
+
+            </div>
+
+
+            <!-- Previous Owners -->
+
+            <div class="form-group">
+
+                <label for="owners">
+                    Previous Owners
+                </label>
+
+                <input
+                    type="number"
+                    id="owners"
+                    min="0"
+                    max="10"
+                    placeholder="Example: 1"
+                    required
+                >
+
+            </div>
+
+
+            <!-- Engine -->
+
+            <div class="form-group">
+
+                <label for="engine">
+                    Engine CC
+                </label>
+
+                <input
+                    type="number"
+                    id="engine"
+                    min="500"
+                    max="6000"
+                    placeholder="Example: 1497"
+                    required
+                >
+
+            </div>
+
+
+            <!-- Mileage -->
+
+            <div class="form-group">
+
+                <label for="mileage">
+                    Mileage KMPL
+                </label>
+
+                <input
+                    type="number"
+                    id="mileage"
+                    step="0.1"
+                    min="1"
+                    max="100"
+                    placeholder="Example: 17.5"
+                    required
+                >
+
+            </div>
+
+
+            <!-- Color -->
+
+            <div class="form-group">
+
+                <label for="color">
+                    Color
+                </label>
+
+                <select id="color" required>
+
+                    <option value="">
+                        Select Color
+                    </option>
+
+                    {% for color in colors %}
+
+                    <option value="{{ color }}">
+                        {{ color }}
+                    </option>
+
+                    {% endfor %}
+
+                </select>
+
+            </div>
+
+
+            <!-- Submit Button -->
+
+            <button
+                type="submit"
+                class="predict-button"
+                id="predictButton">
+
+                Predict Car Price
+
+            </button>
+
+
+        </form>
+
+
+        <!-- ============================= -->
+        <!-- Loading -->
+        <!-- ============================= -->
+
+        <div id="loading" class="loading">
+
+            <div class="spinner"></div>
+
+            <p>
+                Analyzing car details...
+            </p>
+
+        </div>
+
+
+        <!-- ============================= -->
+        <!-- Result -->
+        <!-- ============================= -->
+
+        <div id="result" class="result">
+
+            <div class="result-icon">
+                💰
+            </div>
+
+            <p>
+                Estimated Selling Price
+            </p>
+
+            <h2 id="price">
+                ₹0
+            </h2>
+
+            <span>
+                Estimated using Multiple Linear Regression
+            </span>
+
+        </div>
+
+
+        <!-- Error -->
+
+        <div id="error"
+             class="error">
+
+        </div>
+
+
+    </div>
+
+</section>
+
+
+<!-- ============================= -->
+<!-- How It Works -->
+<!-- ============================= -->
+
+<section class="about-section" id="about">
+
+    <div class="about-container">
+
+        <div class="about-title">
+
+            <p>HOW IT WORKS</p>
+
+            <h2>
+                Car Price Prediction Process
+            </h2>
+
+        </div>
+
+
+        <div class="steps">
+
+
+            <div class="step">
+
+                <div class="step-number">
+                    01
+                </div>
+
+                <h3>
+                    Enter Details
+                </h3>
+
+                <p>
+                    Enter information such as brand,
+                    model, year, kilometers, engine,
+                    mileage and transmission.
+                </p>
+
+            </div>
+
+
+            <div class="step">
+
+                <div class="step-number">
+                    02
+                </div>
+
+                <h3>
+                    Data Processing
+                </h3>
+
+                <p>
+                    Categorical values are converted
+                    into numerical values using
+                    OneHotEncoder.
+                </p>
+
+            </div>
+
+
+            <div class="step">
+
+                <div class="step-number">
+                    03
+                </div>
+
+                <h3>
+                    ML Prediction
+                </h3>
+
+                <p>
+                    The trained Multiple Linear Regression
+                    model analyzes the input features.
+                </p>
+
+            </div>
+
+
+            <div class="step">
+
+                <div class="step-number">
+                    04
+                </div>
+
+                <h3>
+                    Price Result
+                </h3>
+
+                <p>
+                    The predicted selling price is
+                    displayed on the website.
+                </p>
+
+            </div>
+
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- ============================= -->
+<!-- Footer -->
+<!-- ============================= -->
+
+<footer>
+
+    <p>
+        © 2026 CarPrice AI | Machine Learning Project
+    </p>
+
+</footer>
+
+
+<!-- ============================= -->
+<!-- JavaScript -->
+<!-- ============================= -->
+
+<script>
+
+const form = document.getElementById("predictionForm");
+
+const loading = document.getElementById("loading");
+
+const result = document.getElementById("result");
+
+const errorBox = document.getElementById("error");
+
+const price = document.getElementById("price");
+
+const predictButton =
+    document.getElementById("predictButton");
+
+
+form.addEventListener("submit", async function(event) {
+
+    event.preventDefault();
+
+
+    // Hide previous result
+
+    result.style.display = "none";
+
+    errorBox.style.display = "none";
+
+
+    // Show loading
+
+    loading.style.display = "block";
+
+    predictButton.disabled = true;
+
+    predictButton.innerText = "Predicting...";
+
+
+    // Get form values
+
+    const data = {
+
+        Brand:
+            document.getElementById("brand").value,
+
+        Model:
+            document.getElementById("model").value,
+
+        Year:
+            document.getElementById("year").value,
+
+        Kilometers_Driven:
+            document.getElementById("kilometers").value,
+
+        Fuel_Type:
+            document.getElementById("fuel").value,
+
+        Transmission:
+            document.getElementById("transmission").value,
+
+        Previous_Owners:
+            document.getElementById("owners").value,
+
+        Engine_CC:
+            document.getElementById("engine").value,
+
+        Mileage_KMPL:
+            document.getElementById("mileage").value,
+
+        Color:
+            document.getElementById("color").value
+
+    };
+
+
+    try {
+
+        // Send request to Flask backend
+
+        const response = await fetch("/predict", {
+
+            method: "POST",
+
+            headers: {
+
+                "Content-Type":
+                    "application/json"
+
+            },
+
+            body: JSON.stringify(data)
+
+        });
+
+
+        const resultData =
+            await response.json();
+
+
+        // Hide loading
+
+        loading.style.display = "none";
+
+        predictButton.disabled = false;
+
+        predictButton.innerText =
+            "Predict Car Price";
+
+
+        // Check error
+
+        if (!response.ok) {
+
+            throw new Error(
+                resultData.error ||
+                "Prediction failed."
+            );
+
+        }
+
+
+        // Show predicted price
+
+        price.innerText =
+            resultData.formatted_price;
+
+        result.style.display = "block";
+
+
+        // Scroll to result
+
+        result.scrollIntoView({
+
+            behavior: "smooth",
+
+            block: "center"
+
+        });
+
+
+    }
+
+    catch (error) {
+
+        loading.style.display = "none";
+
+        predictButton.disabled = false;
+
+        predictButton.innerText =
+            "Predict Car Price";
+
+
+        errorBox.innerText =
+            error.message;
+
+        errorBox.style.display =
+            "block";
+
+    }
+
+});
+
+</script>
+
+
+</body>
+
+</html>
